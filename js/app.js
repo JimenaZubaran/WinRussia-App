@@ -20,62 +20,77 @@ function loadPage(){
 
   $("#btn-google").click(function(e){
   //e.preventDefault();
-  authGoogle();
+  console.log("presionaste el botón de google")
+  signinWithGoogle();
 })
-
-function authGoogle(){
-  var provider = new firebase.auth.GoogleAuthProvider();
-  authentication(provider);
-}
-
-function authentication(provider){
-  firebase.auth().signInWithPopup(provider).then(function(result) {
-  // This gives you a Google Access Token. You can use it to access the Google API.
-  var token = result.credential.accessToken;
-  // The signed-in user info.
-  var user = result.user;
-  localStorage.setItem("nombre", user.displayName);
-  window.location.href = "views/principal.html";
-//  console.log(result);
-  // ...
-})
-.catch(function(error) {
-  // Handle Errors here.
-  var errorCode = error.code;
-//  console.log(errorCode);
-  var errorMessage = error.message;
-//  console.log(errorMessage);
-  // The email of the user's account used.
-  var email = error.email;
-//  console.log(email);
-  // The firebase.auth.AuthCredential type that was used.
-  var credential = error.credential;
-//  console.log(credential);
-  // ...
-});
-}
-
 
 $("#btn-facebook").click(function(e){
 //e.preventDefault();
-authFacebook();
+console.log("presionaste el botón de facebook")
+authenticationFacebook();
 })
 
-function authFacebook(){
-  var provider = new firebase.auth.FacebookAuthProvider();
-  console.log(provider);
-  authenticationFacebook(provider);
+
+//Funcion para iniciar sesion
+function signinWithGoogle() {
+  var provider = new firebase.auth.GoogleAuthProvider();
+  //Se inicia sesion con un pop-up
+  firebase.auth().signInWithPopup(provider).then(function (result) {
+      //token de google
+      var token = result.credential.accessToken;
+      var user = result.user;
+      //Display
+      var displayName = user.displayName;
+      localStorage.setItem("userName1", displayName);
+    //email
+    //  var email = user.email;
+    //  localStorage.setItem("userEmail1", email);
+    //Photo
+      var photoURL = user.photoURL;
+      localStorage.setItem("userPicture1", photoURL);
+      console.log(photoURL);
+      //vista
+      window.location.assign("views/principal.html");
+      // console.log(user);
+    }).catch(function (error) {
+      //se manejan los erores aqui
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      var email = error.email;
+      var credential = error.credential;
+      if (errorCode === 'ya existe una cuenta con una credencial distinta') {
+        alert('Provedor registrado');
+        // If you are using multiple auth providers on your app you should handle linking
+        // the user's accounts here.
+      } else {
+        console.error(error);
+      }
+    });
+  console.log('SignIn');
+  dataUser()
 }
 
+function dataUser() {
+       console.log("Se ejecutó dataUser")
+       var userName = localStorage.getItem("userName1");
+      // var userEmail = localStorage.getItem("userEmail1");
+       var userPicture = localStorage.getItem("userPicture1");
+       //$('#user-name2').html(userName);
+      // $('#user-picture').attr('src', userPicture);
+   }
+
+
+
 function authenticationFacebook(provider){
+  console.log("Inicio authfacebook")
   var provider = new firebase.auth.FacebookAuthProvider();
-  provider.addScope("public_profile");
+  //provider.addScope("public_profile");
   firebase.auth().signInWithPopup(provider).then(function(result) {
-    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+    //tokenfacebook
     var token = result.credential.accessToken;
-    // The signed-in user info.
     var user = result.user;
-    localStorage.setItem("nombre", user.displayName);
+    var displayName = user.displayName;
+  //  localStorage.setItem("nombre", user.displayName);
     window.location.href = "views/principal.html";
     console.log(user);
     // ...
@@ -93,23 +108,22 @@ function authenticationFacebook(provider){
 
 //Función para agregar datos de usuario
 function inizializarFire(){
+  console.log("Se ejecutó inizializarFire")
   firebase.auth().onAuthStateChanged(function(user) {
-    var $userPicture = $("user-pic");
-    var $userName = $("user-name");
-
-
+  //  var $userPicture = $("user-pic");
+    //var $userName = $("user-name");
     if (user) {
       // User is signed in.
       var displayName = user.displayName;
-      localStorage.setItem("displayName1", displayName);
       var userPhoto = user.photoURL;
       console.log(userPhoto);
       console.log(displayName);
       //var $displayName2 = localStorage.getItem(displayName1);
       //console.log(displayName2);
-
-      $userName.textContent = displayName;
-      $userPicture.attr('src', userPhoto);
+      $("#user-picture").attr("src", userPhoto);
+      $("#user-name").text(displayName);
+      //$userName.textContent = displayName;
+    //  $userPicture.attr('src', userPhoto);
 
 
     }
@@ -119,32 +133,9 @@ function inizializarFire(){
   inizializarFire()
 //}
 
-
-
-    //Botón para ingresar con correo electrónico y contraseña
-    $("#btn-mail-access").click(loginWithMail);
-
 }
 
 
-
-  //Función para ingresar con correo electrónico y contraseña
-function loginWithMail() {
-	var $loginEmail = $("#login-email").val();
-	var $loginPassword = $("#login-password").val();
-
-		firebase.auth().signInWithEmailAndPassword($loginEmail, $loginPassword)
-		.then(function(result){
-			window.location.href = "views/principal.html";
-		})
-		.catch(function(error) {
-	  // Handle Errors here.
-	  var errorCode = error.code;
-	  var errorMessage = error.message;
-	  // ...
-	});
-
-}
 
 
 //**************---------- APIS FUNCTIONS ---------**************
