@@ -20,7 +20,7 @@
 ## <a name="herramientas"></a> Herramientas utilizadas:
 - Api de yes or not para juego de azar
 - Api de Stripe como forma de pago
-- Api de Fifa con los datos de los jegos pasados para las estadísticas
+- Api de FIFA con los datos de los jUegos pasados para las estadísticas
 - Firebase para autenticación de usuario por medio de Google y Facebook
 - Responsive 
 
