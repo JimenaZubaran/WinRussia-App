@@ -1,7 +1,7 @@
 # WinRussia # 
 ### Vista previa 
 
-<img src=assets/images/vista.PNG>
+![wr](https://user-images.githubusercontent.com/32856416/38595233-30afcd66-3d10-11e8-8737-14abd132108e.PNG)
 
 ### V1.0.0
 <img src=assets/images/logo-horizontal.png>
@@ -112,5 +112,5 @@ Las tareas, objetivos y milestones de cada etapa del proyecto se definieron por 
         - Términos y condiciones.
         - Cerrar Sesión.
 
-![wr](https://user-images.githubusercontent.com/32856416/38595233-30afcd66-3d10-11e8-8737-14abd132108e.PNG)
+
 
